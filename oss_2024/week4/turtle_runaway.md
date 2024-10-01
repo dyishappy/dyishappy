@@ -1,8 +1,8 @@
-#Turtle_runaway
+# Turtle_runaway
 
 
 ---
-##게임 설명
+## 게임 설명
 1. **turtel_runaway.py** 파일을 실행시킨다.
 2. 난이도를 선택한다.
 3. 제한시간 내에 거북이를 잡는다!
