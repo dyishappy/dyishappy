@@ -15,8 +15,8 @@ def load_wdbc_data(filename):
     with open(filename) as f:
         for line in f.readlines():
             items = line.split(',')
-            wdbc.target.append(items[1])        # TODO #1) Add the true label (0 for M / 1 for others)
-            wdbc.data.append(items[2:])         # TODO #1) Add 30 attributes (as floating-point numbers)
+            wdbc.target.append(0 if items[1]=='M' else 1)        # TODO #1) Add the true label (0 for M / 1 for others)
+            wdbc.data.append([float(item) for item in items[2:]])         # TODO #1) Add 30 attributes (as floating-point numbers)
         wdbc.data = np.array(wdbc.data)
     return wdbc
 
@@ -33,6 +33,15 @@ if __name__ == '__main__':
     accuracy = metrics.balanced_accuracy_score(wdbc.target, predict)
 
     # TODO #3) Visualize the confusion matrix
+    # confusion matrix 생성
+    conf_matx = metrics.confusion_matrix(predict, wdbc.target)
+
+    # 배열을 뒤집어 새로운 위치로 설정
+    # 원래는 [[TN, FP], [FN, TP]]이므로, [[TP, FN], [FP, TN]]으로 변경
+    reordered_conf_matx = np.array([[conf_matx[1, 1], conf_matx[1, 0]],
+                                [conf_matx[0, 1], conf_matx[0, 0]]])
+    conf_disp = metrics.ConfusionMatrixDisplay(conf_matx, display_labels=['malignant', 'benign'])
+    conf_disp.plot()
 
     # Visualize testing results
     cmap = np.array([(1, 0, 0), (0, 1, 0)])
